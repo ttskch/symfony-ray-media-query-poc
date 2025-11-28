@@ -1,0 +1,15 @@
+includes:
+  - vendor-bin/tools/vendor/phpstan/phpstan-strict-rules/rules.neon
+  - vendor-bin/tools/vendor/phpstan/phpstan-symfony/extension.neon
+  - vendor-bin/tools/vendor/phpstan/phpstan-symfony/rules.neon
+  - vendor-bin/tools/vendor/phpstan/phpstan-phpunit/extension.neon
+  - vendor-bin/tools/vendor/phpstan/phpstan-phpunit/rules.neon
+
+parameters:
+  level: max
+  paths:
+    - src
+
+  # phpstan/phpstan-symfony
+  symfony:
+    containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml

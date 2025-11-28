@@ -93,6 +93,16 @@
         ],
         "cs:fix": [
             "vendor/bin/php-cs-fixer fix"
+        ],
+        "phpstan": [
+            "bin/console cache:warmup --env=dev # ignore additional arguments",
+            "@php -d memory_limit=-1 vendor/bin/phpstan analyse -v"
+        ],
+        "sa": [
+            "@phpstan"
+        ],
+        "sa:clear": [
+            "@php -d memory_limit=-1 vendor/bin/phpstan clear-result-cache"
         ]
     },
     "conflict": {
