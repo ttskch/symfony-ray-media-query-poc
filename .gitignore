@@ -1,3 +1,4 @@
+/vendor-bin/*/vendor/
 
 ###> symfony/framework-bundle ###
 /.env.local
