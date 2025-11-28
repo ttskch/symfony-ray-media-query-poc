@@ -87,6 +87,12 @@
         "post-update-cmd": [
             "@auto-scripts",
             "@composer bin all update --ansi"
+        ],
+        "cs": [
+            "vendor/bin/php-cs-fixer fix --dry-run --diff -v"
+        ],
+        "cs:fix": [
+            "vendor/bin/php-cs-fixer fix"
         ]
     },
     "conflict": {
