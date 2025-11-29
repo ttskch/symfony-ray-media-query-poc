@@ -29,3 +29,9 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: src/Form/SaleReportSearchType.php
+
+		-
+			message: '#^Class App\\Form\\SaleType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/SaleType.php

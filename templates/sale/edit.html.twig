@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Sale #{{ sale.id }}{% endblock %}
+
+{% block body %}
+    <nav class="mb-3" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home_index') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('sale_index') }}">Sales</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('sale_show', {id: sale.id}) }}">#{{ sale.id }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="{{ path('sale_edit', {id: sale.id}) }}">Edit</a></li>
+        </ol>
+    </nav>
+
+    <h1 class="mb-3">Edit Sale #{{ sale.id }}</h1>
+
+    {{ include('sale/_form.html.twig', {id: 'sale_form'}) }}
+
+    <div class="d-flex justify-content-between flex-row-reverse mb-3">
+        <button class="btn btn-primary" form="sale_form">Update</button>
+        <form method="post" action="{{ path('sale_delete', {'id': sale.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ sale.id) }}">
+            <button class="btn btn-outline-danger">Delete...</button>
+        </form>
+    </div>
+{% endblock %}

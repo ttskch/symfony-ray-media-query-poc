@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create new Sale{% endblock %}
+
+{% block body %}
+    <nav class="mb-3" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home_index') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('sale_index') }}">Sales</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="{{ path('sale_new') }}">New</a></li>
+        </ol>
+    </nav>
+
+    <h1 class="mb-3">Create new Sale</h1>
+
+    {{ include('sale/_form.html.twig', {id: 'sale_form'}) }}
+
+    <div class="d-flex justify-content-end mb-3">
+        <button class="btn btn-primary" form="sale_form">Save</button>
+    </div>
+{% endblock %}

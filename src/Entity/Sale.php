@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Repository\SaleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SaleRepository::class)]
 class Sale
@@ -17,13 +18,17 @@ class Sale
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+    #[Assert\NotBlank]
+    #[Assert\Range(min: '2025-01-01', max: '2025-01-31')]
     private ?\DateTimeImmutable $date = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank]
     private ?int $amount = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private ?User $user = null;
 
     public function getId(): ?int
@@ -36,7 +41,7 @@ class Sale
         return $this->date;
     }
 
-    public function setDate(\DateTimeImmutable $date): static
+    public function setDate(?\DateTimeImmutable $date = null): static
     {
         $this->date = $date;
 
@@ -48,7 +53,7 @@ class Sale
         return $this->amount;
     }
 
-    public function setAmount(int $amount): static
+    public function setAmount(?int $amount = null): static
     {
         $this->amount = $amount;
 

@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sales{% endblock %}
+
+{% block body %}
+    <nav class="mb-3" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home_index') }}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="{{ path('sale_index') }}">Sales</a></li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between mb-3">
+        <h1 class="mb-0">Sales</h1>
+        <div class="d-flex align-items-center gap-2">
+            <a href="{{ path('sale_new') }}" class="btn btn-outline-primary">New</a>
+            <a href="{{ path('sale_report') }}" class="btn btn-outline-secondary">Report</a>
+        </div>
+    </div>
+
+    <table class="table table-hover mb-3">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for sale in sales %}
+            <tr>
+                <td>{{ sale.id }}</td>
+                <td>{{ sale.date|date('Y-m-d') }}</td>
+                <td>$ {{ sale.amount|number_format }}</td>
+                <td>
+                    <div class="d-flex gap-2">
+                        <a href="{{ path('sale_show', {'id': sale.id}) }}">Show</a>
+                        <a href="{{ path('sale_edit', {'id': sale.id}) }}">Edit</a>
+                    </div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4" class="text-muted">No data</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
