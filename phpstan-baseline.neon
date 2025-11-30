@@ -1,28 +1,130 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Property App\\Entity\\Sale\:\:\$id \(int\|null\) is never assigned int so it can be removed from the property type\.$#'
-			identifier: property.unusedType
-			count: 1
-			path: src/Entity/Sale.php
+			message: '#^Cannot access offset ''id'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: src/Factory/SaleFactory.php
 
 		-
-			message: '#^Property App\\Entity\\Team\:\:\$id \(int\|null\) is never assigned int so it can be removed from the property type\.$#'
-			identifier: property.unusedType
+			message: '#^Cannot access offset ''name'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
-			path: src/Entity/Team.php
+			path: src/Factory/SaleFactory.php
 
 		-
-			message: '#^Property App\\Entity\\User\:\:\$id \(int\|null\) is never assigned int so it can be removed from the property type\.$#'
-			identifier: property.unusedType
+			message: '#^Cannot access offset ''team_histories'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
-			path: src/Entity/User.php
+			path: src/Factory/SaleFactory.php
 
 		-
-			message: '#^Property App\\Entity\\UserTeamHistory\:\:\$id \(int\|null\) is never assigned int so it can be removed from the property type\.$#'
-			identifier: property.unusedType
+			message: '#^Cannot access offset ''username'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
-			path: src/Entity/UserTeamHistory.php
+			path: src/Factory/SaleFactory.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(array\)\: App\\Entity\\UserTeamHistory given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Factory/SaleFactory.php
+
+		-
+			message: '#^Parameter \#1 \$datetime of class DateTimeImmutable constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Factory/SaleFactory.php
+
+		-
+			message: '#^Parameter \#2 \$array of function array_map expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Factory/SaleFactory.php
+
+		-
+			message: '#^Parameter \$id of class App\\Entity\\Team constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Factory/SaleFactory.php
+
+		-
+			message: '#^Parameter \$id of class App\\Entity\\User constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Factory/SaleFactory.php
+
+		-
+			message: '#^Parameter \$id of class App\\Entity\\UserTeamHistory constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Factory/SaleFactory.php
+
+		-
+			message: '#^Parameter \$name of class App\\Entity\\Team constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Factory/SaleFactory.php
+
+		-
+			message: '#^Parameter \$username of class App\\Entity\\User constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Factory/SaleFactory.php
+
+		-
+			message: '#^Cannot access offset ''id'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Factory/UserFactory.php
+
+		-
+			message: '#^Cannot access offset ''name'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Factory/UserFactory.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(array\)\: App\\Entity\\UserTeamHistory given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Factory/UserFactory.php
+
+		-
+			message: '#^Parameter \#1 \$datetime of class DateTimeImmutable constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Factory/UserFactory.php
+
+		-
+			message: '#^Parameter \#2 \$array of function array_map expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Factory/UserFactory.php
+
+		-
+			message: '#^Parameter \$id of class App\\Entity\\Team constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Factory/UserFactory.php
+
+		-
+			message: '#^Parameter \$id of class App\\Entity\\User constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Factory/UserFactory.php
+
+		-
+			message: '#^Parameter \$id of class App\\Entity\\UserTeamHistory constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Factory/UserFactory.php
+
+		-
+			message: '#^Parameter \$name of class App\\Entity\\Team constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Factory/UserFactory.php
 
 		-
 			message: '#^Class App\\Form\\SaleReportSearchType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'

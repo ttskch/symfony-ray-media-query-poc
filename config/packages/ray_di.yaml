@@ -1,0 +1,10 @@
+# https://symfony.com/doc/current/service_container/synthetic_services.html
+services:
+    App\Repository\UserRepositoryInterface:
+        synthetic: true
+    App\Repository\TeamRepositoryInterface:
+        synthetic: true
+    App\Repository\UserTeamHistoryRepositoryInterface:
+        synthetic: true
+    App\Repository\SaleRepositoryInterface:
+        synthetic: true
