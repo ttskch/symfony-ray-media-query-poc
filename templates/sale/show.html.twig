@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sale #{{ sale.id }}{% endblock %}
+
+{% block body %}
+    <nav class="mb-3" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home_index') }}">Home</a></li>
+            <li class="breadcrumb-item">Sales</li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="{{ path('sale_show', {id: sale.id}) }}">#{{ sale.id }}</a></li>
+        </ol>
+    </nav>
+
+    <h1 class="mb-3">Sale #{{ sale.id }}</h1>
+
+    <table class="table table-hover mb-3">
+        <tr>
+            <th>ID</th>
+            <td>{{ sale.id }}</td>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <td>{{ sale.date|date('Y-m-d') }}</td>
+        </tr>
+        <tr>
+            <th>Amount</th>
+            <td>$ {{ sale.amount|number_format }}</td>
+        </tr>
+        <tr>
+            <th>User</th>
+            <td>
+                <a href="{{ path('user_show', {id: sale.user.id}) }}">{{ sale.user }}</a>
+            </td>
+        </tr>
+    </table>
+{% endblock %}

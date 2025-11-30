@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User #{{ user.id }}{% endblock %}
+
+{% block body %}
+    <nav class="mb-3" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home_index') }}">Home</a></li>
+            <li class="breadcrumb-item">Users</li>
+            <li class="breadcrumb-item"><a href="{{ path('user_show', {id: user.id}) }}">#{{ user.id }}</a></li>
+        </ol>
+    </nav>
+
+    <h1 class="mb-3">User #{{ user.id }}</h1>
+
+    <table class="table table-hover mb-3">
+        <tr>
+            <th>ID</th>
+            <td>{{ user.id }}</td>
+        </tr>
+        <tr>
+            <th>Username</th>
+            <td>{{ user.username }}</td>
+        </tr>
+        <tr>
+            <th>Team History</th>
+            <td class="p-0">
+                <table class="table table-hover" style="margin-bottom:-1px">
+                    <thead>
+                    <tr>
+                        <th>From Date</th>
+                        <th>To Date</th>
+                        <th>Team</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for history in user.teamHistories %}
+                        <tr>
+                            <td>{{ history.fromDate ? history.fromDate|date('Y-m-d') : '-' }}</td>
+                            <td>{{ history.toDate ? history.toDate|date('Y-m-d') : '-' }}</td>
+                            <td>
+                                <a href="{{ path('team_show', {id: history.team.id}) }}">
+                                    {{ history.team }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>
+{% endblock %}

@@ -23,3 +23,9 @@ parameters:
 			identifier: property.unusedType
 			count: 1
 			path: src/Entity/UserTeamHistory.php
+
+		-
+			message: '#^Class App\\Form\\SaleReportSearchType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Form/SaleReportSearchType.php

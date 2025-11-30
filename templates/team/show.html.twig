@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Team #{{ team.id }}{% endblock %}
+
+{% block body %}
+    <nav class="mb-3" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('home_index') }}">Home</a></li>
+            <li class="breadcrumb-item">Teams</li>
+            <li class="breadcrumb-item"><a href="{{ path('team_show', {id: team.id}) }}">#{{ team.id }}</a></li>
+        </ol>
+    </nav>
+
+    <h1 class="mb-3">Team #{{ team.id }}</h1>
+
+    <table class="table table-hover mb-3">
+        <tr>
+            <th>ID</th>
+            <td>{{ team.id }}</td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td>{{ team.name }}</td>
+        </tr>
+    </table>
+{% endblock %}
