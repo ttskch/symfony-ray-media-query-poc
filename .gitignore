@@ -2,6 +2,7 @@
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
 /.phpstan.neon
+/var/data_dev.db
 
 ###> symfony/framework-bundle ###
 /.env.local
