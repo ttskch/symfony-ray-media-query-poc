@@ -3,6 +3,10 @@ services:
         arguments: ['@App\Ray\Di\AppModule']
         public: true
 
+    Doctrine\ORM\EntityManagerInterface:
+        alias: 'doctrine.orm.entity_manager'
+        public: true
+
     # https://symfony.com/doc/current/service_container/synthetic_services.html
     App\Ray\MediaQuery\Query\SaleQueryInterface:
         synthetic: true
