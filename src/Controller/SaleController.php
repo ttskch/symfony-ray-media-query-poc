@@ -8,7 +8,6 @@ use App\Entity\Sale;
 use App\Form\Dto\SaleReportSearchDto;
 use App\Form\SaleReportSearchType;
 use App\Form\SaleType;
-use App\Ray\MediaQuery\Query\SaleQueryInterface;
 use App\Repository\SaleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +25,7 @@ final class SaleController extends AbstractController
     }
 
     #[Route(path: '/report', name: 'report', methods: ['GET'])]
-    public function report(Request $request, SaleQueryInterface $saleQuery): Response
+    public function report(Request $request): Response
     {
         $dto = new SaleReportSearchDto();
         $form = $this->createForm(SaleReportSearchType::class, $dto, [
@@ -36,7 +35,8 @@ final class SaleController extends AbstractController
         $form->handleRequest($request);
 
         assert($dto->date !== null);
-        $sales = $saleQuery->search($dto->date->format('Y-m-d'), $dto->team?->getId());
+
+        $sales = $this->saleRepository->search($dto->date, $dto->team);
 
         return $this->render('sale/report.html.twig', [
             'sales' => $sales,

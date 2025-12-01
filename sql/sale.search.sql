@@ -1,23 +1,14 @@
 SELECT
-    s.id,
-    s.date,
-    s.amount,
-    json_object(
-        'id', u.id,
-        'username', u.username,
-        'team_histories', json_group_array(
-            json_object(
-                'id', uth.id,
-                'user_id', uth.user_id,
-                'team_json', json_object(
-                    'id', t.id,
-                    'name', t.name
-                ),
-                'from_date', uth.from_date,
-                'to_date', uth.to_date
-            )
-        )
-    ) as user_json
+    s.id AS s_id,
+    s.date AS s_date,
+    s.amount AS s_amount,
+    u.id AS u_id,
+    u.username AS u_username,
+    uth.id AS uth_id,
+    uth.from_date AS uth_from_date,
+    uth.to_date AS uth_to_date,
+    t.id AS t_id,
+    t.name AS t_name
 FROM
     sale s
     LEFT JOIN user u ON s.user_id = u.id
