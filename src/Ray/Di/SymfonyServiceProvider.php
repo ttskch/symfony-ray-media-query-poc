@@ -9,7 +9,8 @@ use Ray\Di\ProviderInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * @implements ProviderInterface<object>
+ * @template T of object
+ * @implements ProviderInterface<T>
  */
 final class SymfonyServiceProvider implements ProviderInterface
 {
@@ -19,6 +20,9 @@ final class SymfonyServiceProvider implements ProviderInterface
     ) {
     }
 
+    /**
+     * @return T
+     */
     public function get(): object
     {
         // InjectionPointから#[SymfonyService]属性を取得
@@ -33,6 +37,8 @@ final class SymfonyServiceProvider implements ProviderInterface
         $serviceId = $serviceAttr->serviceId;
 
         // Symfonyコンテナから取得
-        return $this->symfonyContainer->get($serviceId);
+        $service = $this->symfonyContainer->get($serviceId);
+        /** @var T $service */
+        return $service;
     }
 }
