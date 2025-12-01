@@ -8,13 +8,13 @@ use App\Entity\Sale;
 use App\Entity\Team;
 use App\Entity\User;
 use App\Entity\UserTeamHistory;
+use App\Ray\Di\SymfonyService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
-#[Autoconfigure(public: true)]
 final readonly class SaleFactory
 {
     public function __construct(
+        #[SymfonyService(EntityManagerInterface::class)]
         private EntityManagerInterface $em,
     ) {
     }

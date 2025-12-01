@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Ray\Di;
 
-use App\Ray\MediaQuery\SymfonyFetchFactory;
+use Doctrine\ORM\EntityManagerInterface;
 use Ray\AuraSqlModule\AuraSqlModule;
 use Ray\Di\AbstractModule;
 use Ray\Di\Injector;
-use Ray\Di\Scope;
 use Ray\MediaQuery\ClassesInDirectories;
-use Ray\MediaQuery\FetchFactoryInterface;
 use Ray\MediaQuery\MediaQuerySqlModule;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -39,24 +37,17 @@ final class AppModule extends AbstractModule
             new AuraSqlModule($this->dsn),
         );
 
-        // override the binding for FetchFactoryInterface and make it singleton
-        $this->bind(FetchFactoryInterface::class)->to(SymfonyFetchFactory::class)->in(Scope::SINGLETON);
+        // Bind Symfony services to SymfonyServiceProvider
+        $this->bind(EntityManagerInterface::class)->toProvider(SymfonyServiceProvider::class);
     }
 
     public function integrateWithSymfony(ContainerInterface $symfonyContainer, Injector $injector): void
     {
         $queryInterfaces = ClassesInDirectories::list(__DIR__.'/../MediaQuery/Query');
-        $factoryClasses = ClassesInDirectories::list(__DIR__.'/../MediaQuery/Factory');
 
         // register all query interfaces to Symfony container
         foreach ($queryInterfaces as $queryInterface) {
             $symfonyContainer->set($queryInterface, $injector->getInstance($queryInterface));
         }
-
-        // inject factories into FetchFactory
-        $factories = array_map(fn ($factoryClass) => $symfonyContainer->get($factoryClass), iterator_to_array($factoryClasses));
-        $fetchFactory = $injector->getInstance(FetchFactoryInterface::class);
-        assert($fetchFactory instanceof SymfonyFetchFactory);
-        $fetchFactory->setFactories($factories);
     }
 }
