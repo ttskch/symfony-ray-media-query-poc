@@ -20,6 +20,8 @@ final class AppModule extends AbstractModule
     public function __construct(
         #[Autowire(env: 'resolve:DATABASE_URL')]
         private readonly string $dsn,
+        #[Autowire(service: 'service_container')]
+        private readonly ContainerInterface $symfonyContainer,
     ) {
         parent::__construct();
     }
@@ -36,6 +38,9 @@ final class AppModule extends AbstractModule
         $this->install(
             new AuraSqlModule($this->dsn),
         );
+
+        // Bind Symfony's ContainerInterface so SymfonyServiceProvider can use it
+        $this->bind(ContainerInterface::class)->toInstance($this->symfonyContainer);
 
         // Bind Symfony services to SymfonyServiceProvider
         $this->bind(EntityManagerInterface::class)->toProvider(SymfonyServiceProvider::class);
