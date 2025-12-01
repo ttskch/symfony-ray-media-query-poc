@@ -4,27 +4,29 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Form\Dto\SaleDto;
+use App\Entity\Sale;
 use App\Form\Dto\SaleReportSearchDto;
 use App\Form\SaleReportSearchType;
 use App\Form\SaleType;
-use App\Repository\SaleRepositoryInterface;
+use App\Ray\MediaQuery\Query\SaleQueryInterface;
+use App\Repository\SaleRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/sale', name: 'sale_')]
 final class SaleController extends AbstractController
 {
     public function __construct(
-        private readonly SaleRepositoryInterface $saleRepository,
+        private readonly EntityManagerInterface $em,
+        private readonly SaleRepository $saleRepository,
     ) {
     }
 
     #[Route(path: '/report', name: 'report', methods: ['GET'])]
-    public function report(Request $request): Response
+    public function report(Request $request, SaleQueryInterface $saleQuery): Response
     {
         $dto = new SaleReportSearchDto();
         $form = $this->createForm(SaleReportSearchType::class, $dto, [
@@ -34,7 +36,7 @@ final class SaleController extends AbstractController
         $form->handleRequest($request);
 
         assert($dto->date !== null);
-        $sales = $this->saleRepository->search($dto->date->format('Y-m-d'), $dto->teamId);
+        $sales = $saleQuery->search($dto->date->format('Y-m-d'), $dto->team?->getId());
 
         return $this->render('sale/report.html.twig', [
             'sales' => $sales,
@@ -54,17 +56,13 @@ final class SaleController extends AbstractController
     #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
-        $dto = new SaleDto();
-        $form = $this->createForm(SaleType::class, $dto);
+        $sale = new Sale();
+        $form = $this->createForm(SaleType::class, $sale);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            assert($dto->date !== null && $dto->amount !== null && $dto->userId !== null);
-            $this->saleRepository->new(
-                date: $dto->date->format('Y-m-d'),
-                amount: $dto->amount,
-                user_id: $dto->userId,
-            );
+            $this->em->persist($sale);
+            $this->em->flush();
 
             $this->addFlash('success', 'The new sale was successfully created.');
 
@@ -72,45 +70,27 @@ final class SaleController extends AbstractController
         }
 
         return $this->render('sale/new.html.twig', [
+            'sale' => $sale,
             'form' => $form,
         ]);
     }
 
     #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
-    public function show(int $id): Response
+    public function show(Sale $sale): Response
     {
-        $sale = $this->saleRepository->find($id);
-
         return $this->render('sale/show.html.twig', [
             'sale' => $sale,
         ]);
     }
 
     #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, int $id): Response
+    public function edit(Request $request, Sale $sale): Response
     {
-        $sale = $this->saleRepository->find($id);
-
-        if ($sale === null) {
-            throw new NotFoundHttpException();
-        }
-
-        $dto = new SaleDto(
-            date: $sale->date,
-            amount: $sale->amount,
-            userId: $sale->user->id,
-        );
-        $form = $this->createForm(SaleType::class, $dto);
+        $form = $this->createForm(SaleType::class, $sale);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            assert($dto->date !== null && $dto->amount !== null && $dto->userId !== null);
-            $this->saleRepository->edit(
-                id: $id,
-                date: $dto->date->format('Y-m-d'),
-                amount: $dto->amount,
-                user_id: $dto->userId,
-            );
+            $this->em->flush();
 
             $this->addFlash('success', 'The sale was successfully updated.');
 
@@ -124,16 +104,11 @@ final class SaleController extends AbstractController
     }
 
     #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
-    public function delete(Request $request, int $id): Response
+    public function delete(Request $request, Sale $sale): Response
     {
-        $sale = $this->saleRepository->find($id);
-
-        if ($sale === null) {
-            throw new NotFoundHttpException();
-        }
-
-        if ($this->isCsrfTokenValid('delete'.$sale->id, $request->getPayload()->getString('_token'))) {
-            $this->saleRepository->delete($id);
+        if ($this->isCsrfTokenValid('delete'.$sale->getId(), $request->getPayload()->getString('_token'))) {
+            $this->em->remove($sale);
+            $this->em->flush();
         }
 
         return $this->redirectToRoute('sale_index', [], Response::HTTP_SEE_OTHER);

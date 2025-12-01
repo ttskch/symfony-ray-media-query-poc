@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\RayDi;
+namespace App\Ray\Di;
 
+use Ray\Di\Injector;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -16,6 +17,8 @@ trait RayDiKernelTrait
         parent::initializeContainer();
 
         $appModule = $this->container->get(AppModule::class);
-        $appModule->registerServices($this->container);
+        $injector = $this->container->get(Injector::class);
+
+        $appModule->integrateWithSymfony($this->container, $injector);
     }
 }

@@ -4,36 +4,93 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-final readonly class User implements \Stringable
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+class User implements \Stringable
 {
-    public function __construct(
-        public int $id,
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-        public string $username,
+    #[ORM\Column(length: 255)]
+    private ?string $username = null;
 
-        /**
-         * @var array<UserTeamHistory>
-         */
-        public array $teamHistories = [],
-    ) {
+    /**
+     * @var Collection<int, UserTeamHistory>
+     */
+    #[ORM\OneToMany(targetEntity: UserTeamHistory::class, mappedBy: 'user')]
+    #[ORM\OrderBy(['fromDate' => 'ASC'])]
+    private Collection $teamHistories;
+
+    public function __construct()
+    {
+        $this->teamHistories = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): static
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserTeamHistory>
+     */
+    public function getTeamHistories(): Collection
+    {
+        return $this->teamHistories;
+    }
+
+    public function addTeamHistory(UserTeamHistory $teamHistory): static
+    {
+        if (!$this->teamHistories->contains($teamHistory)) {
+            $this->teamHistories->add($teamHistory);
+            $teamHistory->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeamHistory(UserTeamHistory $teamHistory): static
+    {
+        if ($this->teamHistories->removeElement($teamHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($teamHistory->getUser() === $this) {
+                $teamHistory->setUser(null);
+            }
+        }
+
+        return $this;
     }
 
     public function getTeam(\DateTimeInterface $date): ?Team
     {
-        foreach ($this->teamHistories as $history) {
-            if (
-                ($history->fromDate === null || $history->fromDate <= $date)
-                && ($history->toDate === null || $history->toDate >= $date)
-            ) {
-                return $history->team;
+        return $this->teamHistories->filter(
+            function (UserTeamHistory $history) use ($date) {
+                return ($history->getFromDate() === null || $history->getFromDate() <= $date)
+                    && ($history->getToDate() === null || $history->getToDate() >= $date);
             }
-        }
-
-        return null;
+        )->findFirst(fn () => true)?->getTeam();
     }
 
     public function __toString(): string
     {
-        return $this->username;
+        return strval($this->username);
     }
 }

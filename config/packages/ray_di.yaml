@@ -1,10 +1,8 @@
-# https://symfony.com/doc/current/service_container/synthetic_services.html
 services:
-    App\Repository\UserRepositoryInterface:
-        synthetic: true
-    App\Repository\TeamRepositoryInterface:
-        synthetic: true
-    App\Repository\UserTeamHistoryRepositoryInterface:
-        synthetic: true
-    App\Repository\SaleRepositoryInterface:
+    Ray\Di\Injector:
+        arguments: ['@App\Ray\Di\AppModule']
+        public: true
+
+    # https://symfony.com/doc/current/service_container/synthetic_services.html
+    App\Ray\MediaQuery\Query\SaleQueryInterface:
         synthetic: true

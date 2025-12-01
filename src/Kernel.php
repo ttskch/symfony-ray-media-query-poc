@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\RayDi\RayDiKernelTrait;
+use App\Ray\Di\RayDiKernelTrait;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 
